@@ -1,13 +1,15 @@
+import React from 'react';
 
-import Navbar from './Navbar';
-import Footer from './Footer';
-
-const Layout = ({ children }) => (
-  <div className="flex flex-col min-h-screen">
-    <Navbar />
-    <main className="flex-grow">{children}</main>
-    <Footer />
-  </div>
-);
+function Layout({ children }) {
+  return (
+    <div>
+      <header className="header">
+        <h1 className="logo">Hugo Jimenez</h1>
+      </header>
+      <main>{children}</main>
+      {/* Consider adding a custom footer with streetwear styling */}
+    </div>
+  );
+}
 
 export default Layout;

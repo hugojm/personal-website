@@ -1,6 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'CalSans';
+  src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Matter';
+  src: url('/fonts/Matter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-semibold;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+
+  p {
+    @apply text-base md:text-lg leading-relaxed;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient bg-300%;
+    @apply font-display font-bold;
+  }
+  
+  .card {
+    @apply bg-dark/50 backdrop-blur-lg border border-light/10 rounded-2xl p-6 hover:border-accent/50 transition-all duration-300;
+  }
+
+  .header {
+    @apply fixed top-0 w-full bg-background-light p-5 z-50 flex justify-center;
+  }
+
+  .logo {
+    @apply font-display text-2xl md:text-3xl font-bold tracking-tight text-foreground;
+  }
+
+  .title {
+    @apply font-display font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight text-foreground mb-6;
+  }
+
+  .heading {
+    @apply font-display font-semibold text-2xl md:text-3xl tracking-tight mb-6;
+  }
+
+  .description {
+    @apply text-base md:text-lg text-foreground-muted leading-relaxed max-w-2xl;
+  }
+
+  .container {
+    @apply mt-24 px-4 max-w-5xl mx-auto;
+  }
+
+  .logo {
+    @apply font-display text-2xl md:text-3xl font-bold tracking-tight;
+  }
+
+  .nav-link {
+    @apply text-sm font-medium transition-colors hover:text-primary;
+  }
+  
+  .nav-link-active {
+    @apply text-primary;
+  }
+}
+
+@layer utilities {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(8px);
+  }
+}
 
 :root {
   --background: #ffffff;
@@ -14,8 +117,153 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Remove old font imports and declarations */
+/* Remove Sacramento, Bebas Neue, and Prata imports */
+
+/* ...rest of existing code... */
+
+/* Update heading styles */
+h1, h2, .logo {
+  @apply font-display font-bold;
+  text-shadow: none; /* Remove the text shadow */
+}
+
+/* Other existing styles remain unchanged */
+
+/* Parallax background */
+.parallax {
+  background-image: url('/images/streetwear-bg.jpg');
+  min-height: 600px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Styles for the hero section */
+.hero-section {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #0d0d0d;
+  color: #f2f2f2;
+  animation: fadeIn 2s ease-in;
+}
+
+.hero-section .title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  color: #ff1a75;
+}
+
+.hero-section .description {
+  line-height: 1.6;
+  font-size: 1.2rem;
+}
+
+/* Titles and descriptions */
+.title {
+  @apply text-6xl text-primary mb-6 uppercase text-center;
+  font-size: 5rem;
+  margin-bottom: 30px;
+}
+
+.description {
+  @apply text-xl leading-relaxed text-center max-w-3xl mx-auto;
+  font-size: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #f0f0f0;
+}
+
+/* Styles for technology icons */
+.technologies {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.technologies {
+  @apply my-16;
+}
+
+.technologies h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #ff1a75;
+}
+
+.technologies h2 {
+  @apply text-4xl text-accent mb-8 text-center;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.icons {
+  @apply flex flex-wrap justify-center gap-8;
+}
+
+.icon {
+  margin: 20px;
+  transition: transform 0.3s;
+  color: #f2f2f2;
+}
+
+.icon {
+  @apply transform transition-transform duration-300 text-foreground hover:text-primary;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+  color: #ff1a75;
+}
+
+.icon:hover {
+  transform: scale(1.15);
+}
+
+.icon p {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.icon p {
+  @apply mt-2 text-lg text-center;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
 }
