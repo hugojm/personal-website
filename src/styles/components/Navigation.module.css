@@ -1,0 +1,162 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1rem 0;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.scrolled {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--accent-color), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.menuIcon {
+  display: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.menuIcon div {
+  width: 25px;
+  height: 2px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: all 0.3s ease;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 25px;
+  height: 2px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.3s;
+}
+
+.navMenu {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navItem {
+  margin-left: 2rem;
+}
+
+.navLink {
+  position: relative;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+}
+
+.navLink:hover {
+  color: #fff;
+}
+
+.active {
+  color: var(--accent-color);
+}
+
+.activeIndicator {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+.content {
+  margin-top: 4rem; /* Adjust this value based on the height of your navbar */
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 49;
+}
+
+.overlayOpen {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .menuIcon {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .navMenu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 70%;
+    max-width: 400px;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    padding: 6rem 2rem;
+    transition: 0.3s ease-in-out;
+  }
+
+  .navMenuOpen {
+    right: 0;
+  }
+
+  .navItem {
+    margin: 1rem 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .navLink {
+    display: block;
+    padding: 0.5rem 0;
+    width: 100%;
+  }
+
+  .bar1Open {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .bar2Open {
+    opacity: 0;
+  }
+
+  .bar3Open {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+}

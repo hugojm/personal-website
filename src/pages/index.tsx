@@ -1,103 +1,177 @@
-import Layout from '../components/Layout';
-import { FaPython, FaGithub, FaLinkedin } from 'react-icons/fa';
-import { SiTensorflow, SiPytorch, SiScikitlearn, SiKeras, SiOpenai, SiJupyter, SiDocker } from 'react-icons/si';
-import Link from 'next/link';
+import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import styles from '@/styles/Home.module.css';
+
+const Scene3D = dynamic(() => import('@/components/Scene3D'), { ssr: false });
+const ParticleField = dynamic(() => import('@/components/ParticleField'), { ssr: false });
 
 export default function Home() {
-  const technologies = [
-    { icon: <SiTensorflow className="w-8 h-8" />, name: 'TensorFlow' },
-    { icon: <SiPytorch className="w-8 h-8" />, name: 'PyTorch' },
-    { icon: <SiScikitlearn className="w-8 h-8" />, name: 'Scikit-learn' },
-    { icon: <SiKeras className="w-8 h-8" />, name: 'Keras' },
-    { icon: <SiOpenai className="w-8 h-8" />, name: 'OpenAI' },
-    { icon: <SiJupyter className="w-8 h-8" />, name: 'Jupyter' },
-    { icon: <SiDocker className="w-8 h-8" />, name: 'Docker' },
-    { icon: <FaPython className="w-8 h-8" />, name: 'Python' },
-  ];
+  const { scrollYProgress } = useScroll();
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  
+  useEffect(() => {
+    // Initialize window size
+    if (typeof window !== 'undefined') {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }
+
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [mouseX, mouseY]);
+
+  // Only render motion effects when window size is available
+  const heroRotateX = useTransform(mouseY, [0, windowSize.height], [5, -5]);
+  const heroRotateY = useTransform(mouseX, [0, windowSize.width], [-5, 5]);
 
   return (
-    <Layout>
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background-light to-background z-0" />
-        <div className="container relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="gradient-text mb-6">
-              Machine Learning Engineer & AI Researcher
+    <div className={styles.container}>
+      <ParticleField mousePosition={{ x: mouseX.get(), y: mouseY.get() }} />
+      <div className={styles.cursor} style={{ 
+        left: mouseX.get(), 
+        top: mouseY.get() 
+      }} />
+      
+      <motion.div className={styles.backgroundEffect} style={{ y: backgroundY }}>
+        <Scene3D />
+      </motion.div>
+
+      <motion.div 
+        className={styles.content}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.section 
+          className={styles.profileSection}
+          initial={{ y: 20 }}
+          animate={{ y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className={styles.profileContent}>
+            <motion.div 
+              className={styles.profileImage}
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Image
+                src="/images/hugo-jimenez.png" // Updated path to use public directory
+                alt="Hugo Jimenez"
+                width={200}
+                height={200}
+                className={styles.avatar}
+                priority // Add priority for above-the-fold image
+                onError={(e) => {
+                  // Fallback to a default image if main image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/images/default-avatar.png';
+                }}
+              />
+            </motion.div>
+            
+            <motion.div 
+              className={styles.profileText}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <h1 className={styles.title}>
+                Hi, I&apos;m Hugo Jimenez
+              </h1>
+              <p className={styles.bio}>
+                I&apos;m a Machine Learning Engineer passionate about transforming complex 
+                data into intelligent solutions. Specializing in AI and deep learning, 
+                I build systems that make a difference.
+              </p>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        <motion.section 
+          className={styles.heroSection}
+          initial={{ y: 20 }}
+          animate={{ y: 0 }}
+        >
+          <motion.div 
+            className={styles.heroContent}
+            style={{
+              rotateX: heroRotateX,
+              rotateY: heroRotateY,
+            }}
+          >
+            <h1 className={styles.title}>
+              Transforming Ideas into
+              <span className={styles.highlight}>
+                Intelligent Solutions
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-foreground-muted mb-8">
-              Transforming complex data into intelligent solutions. Specializing in deep learning, 
-              computer vision, and natural language processing.
-            </p>
-            <div className="flex gap-4">
-              <Link href="/projects" 
-                className="bg-primary hover:bg-primary-light px-6 py-3 rounded-lg font-medium transition-colors">
-                View Projects
-              </Link>
-              <Link href="/contact"
-                className="border border-foreground/20 hover:border-primary px-6 py-3 rounded-lg font-medium transition-colors">
-                Get in Touch
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+            <motion.p
+              className={styles.subtitle}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Building the future with AI & Machine Learning
+            </motion.p>
 
-      {/* Featured Projects Section */}
-      <section className="py-20 bg-background-light">
-        <div className="container">
-          <h2 className="heading mb-12">Featured ML Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Project Cards */}
-            <div className="card group hover:scale-105 transition-transform">
-              <h3 className="text-xl font-semibold mb-4">Computer Vision Pipeline</h3>
-              <p className="text-foreground-muted mb-4">Real-time object detection system using YOLO and TensorFlow</p>
-              <div className="flex gap-2">
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">TensorFlow</span>
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">OpenCV</span>
-              </div>
-            </div>
-            {/* Add more project cards */}
-          </div>
-        </div>
-      </section>
+            <motion.div
+              className={styles.actionButtons}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <motion.a
+                href="/about"
+                className={`${styles.button} ${styles.primary}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View Experience
+              </motion.a>
+              <motion.a
+                href="/projects"
+                className={`${styles.button} ${styles.secondary}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                See Projects
+              </motion.a>
+            </motion.div>
+          </motion.div>
+        </motion.section>
 
-      {/* Technologies Section */}
-      <section className="py-20">
-        <div className="container">
-          <h2 className="heading text-center mb-12">Tech Stack</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {technologies.map((tech, index) => (
-              <div key={index} className="flex flex-col items-center group">
-                <div className="icon-wrapper mb-4 transform transition-transform group-hover:scale-110">
-                  {tech.icon}
-                </div>
-                <p className="text-foreground-muted group-hover:text-primary transition-colors">
-                  {tech.name}
-                </p>
-              </div>
-            ))}
+        <motion.section className={styles.techSection}>
+          <div className={styles.techSphere}>
+            <Scene3D />
           </div>
-        </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="py-20 bg-background-light">
-        <div className="container text-center">
-          <h2 className="heading mb-8">Connect & Collaborate</h2>
-          <div className="flex justify-center gap-6">
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer"
-              className="text-foreground-muted hover:text-primary transition-colors">
-              <FaGithub className="w-8 h-8" />
-            </a>
-            <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer"
-              className="text-foreground-muted hover:text-primary transition-colors">
-              <FaLinkedin className="w-8 h-8" />
-            </a>
-          </div>
-        </div>
-      </section>
-    </Layout>
+        </motion.section>
+      </motion.div>
+    </div>
   );
 }

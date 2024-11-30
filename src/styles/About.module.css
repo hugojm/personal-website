@@ -1,0 +1,99 @@
+.container {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--background), #1a1a1a);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem; /* Reduced from 4rem */
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem; /* Reduced from 4rem */
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem; /* Reduced from 2rem */
+}
+
+.timelineWrapper {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem; /* Reduced from 2rem */
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.timelineWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: 0.5s;
+}
+
+.timelineWrapper:hover::before {
+  left: 100%;
+}
+
+.timelineItem {
+  margin-bottom: 1.5rem;
+}
+
+.timelineContent {
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+  }
+}
+
+.glowText {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8),
+                 0 0 30px rgba(0, 255, 255, 0.6);
+  }
+}

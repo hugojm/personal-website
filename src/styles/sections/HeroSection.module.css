@@ -1,0 +1,475 @@
+.heroSection {
+  @apply min-h-screen flex flex-col justify-center relative overflow-hidden;
+  composes: bg-mesh-gradient from global;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1rem;
+  min-height: 100vh;
+  position: relative;
+}
+
+.backgroundLayer {
+  @apply absolute inset-0 bg-gradient-to-b from-background/95 via-background/50 to-background z-0;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.gridPattern {
+  @apply absolute inset-0 opacity-10;
+  composes: bg-grid-pattern from global;
+}
+
+.content {
+  @apply container relative z-10 mx-auto px-4 py-32 sm:px-6 lg:px-8;
+  width: 100%;
+  max-width: 4xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 20; /* Increase z-index to ensure visibility */
+}
+
+.conversation {
+  @apply relative w-full max-w-6xl mx-auto flex flex-row items-center justify-between;
+  min-height: 40vh;
+  gap: 2rem;
+  z-index: 30; /* Ensure conversation is above other elements */
+  position: relative;
+  height: 500px; /* Fixed height to prevent layout shift */
+}
+
+.promptContainer {
+  @apply flex flex-col items-end justify-center;
+  width: 250px;
+  position: absolute;
+  left: -180px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+}
+
+.llmContainer {
+  @apply flex-1 flex items-center justify-center;
+  min-height: 400px;
+}
+
+.outputContainer {
+  @apply flex flex-col items-start justify-center;
+  width: 300px;
+  position: absolute;
+  right: -300px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tokenConnection {
+  @apply absolute bg-primary/20;
+  height: 2px;
+  right: -20px;
+  transform-origin: right;
+  transition: all 0.3s ease-out;
+}
+
+.tokenConnection.active {
+  @apply bg-primary;
+  filter: brightness(1.2);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .promptContainer {
+    left: -150px;
+  }
+
+  .outputContainer {
+    right: -200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .promptContainer,
+  .outputContainer {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    /* Reduce width and remove margins */
+    max-width: 220px;
+    margin: 0;
+    padding: 0 1rem;
+  }
+
+  .conversation {
+    flex-direction: column;
+    align-items: center;
+    height: auto; /* Adjust height for smaller screens */
+    /* Reduce gap and adjust alignment */
+    gap: 1rem;
+    align-items: center;
+    height: auto;
+  }
+
+  .llmArchitecture {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+    /* Remove fixed widths to allow for responsive design */
+    /* Decrease height for compact view */
+    height: 280px;
+  }
+  
+  @media (max-width: 768px) {
+    .llmArchitecture {
+      height: 300px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .llmArchitecture {
+      height: 250px;
+    }
+  }
+  
+  .tokenOutput {
+    font-size: 0.875rem; /* Adjust font size for smaller screens */
+    /* Reduce font size and padding */
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .promptContainer {
+    position: relative;
+    left: 0;
+    transform: none;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .tokenConnection {
+    height: 40px;
+    width: 2px;
+    right: 50%;
+    top: 100%;
+    transform-origin: top;
+  }
+
+  .tokenOutput.connected {
+    transform: translateY(-5px);
+  }
+  
+}
+
+@media (max-width: 480px) {
+  .promptContainer,
+  .outputContainer {
+    max-width: 100%;
+    /* Use full width and remove padding */
+    width: 100%;
+    padding: 0;
+  }
+
+  .tokenOutput {
+    font-size: 0.875rem; /* Adjust font size for smaller screens */
+    /* Reduce font size further */
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .conversation {
+    gap: 1rem; /* Reduce gap for smaller screens */
+    /* Minimize gap */
+    gap: 0.5rem;
+  }
+
+  .llmArchitecture {
+    width: 300px;
+    height: 250px;
+    justify-content: center; /* Center the graph */
+    margin: 0 auto; /* Ensure it is centered */
+    /* Further decrease height */
+    height: 200px;
+  }
+}
+
+.prompt {
+  @apply text-primary font-semibold text-3xl;
+  opacity: 1; /* Ensure prompt is visible */
+  text-align: left; /* Align text to the left */
+}
+
+.tokenProcessing {
+  @apply w-full flex flex-wrap gap-4 justify-center items-center;
+  min-height: 50px;
+  width: 100%;
+}
+
+.token {
+  @apply px-3 py-2 rounded-md bg-primary/20 text-primary font-mono text-xl;
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.2);
+  backdrop-filter: blur(4px);
+  position: relative; /* Remove absolute positioning */
+  text-shadow: 0 0 8px currentColor;
+}
+
+.tokenOutput {
+  @apply px-2 py-1.5 rounded-md bg-primary/5 text-primary text-xs font-medium;
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.08);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(var(--primary-rgb), 0.05);
+  letter-spacing: 0.2px;
+  text-align: center;
+  /* Add gradient background and animation */
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  animation: pulse 3s ease-in-out infinite;
+  border: none; /* Remove border for a cleaner look */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: all 0.3s ease-out;
+}
+
+.tokenOutput.connected {
+  transform: translateX(10px);
+  box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.3);
+}
+
+.tokenOutput:nth-child(odd) {
+  background: linear-gradient(135deg, var(--tertiary), var(--quaternary));
+}
+
+.tokenOutput:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes blink {
+  from, to { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.cursor {
+  @apply inline-block w-2 h-4 bg-primary/60 ml-1;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.llmAnimation {
+  @apply absolute inset-0 z-0 opacity-40 overflow-hidden;
+}
+
+.brainWave {
+  @apply absolute bottom-0 left-0 right-0 h-32 opacity-20;
+}
+
+.streamingText {
+  @apply absolute text-primary/40 font-mono text-xs;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes wave {
+  0% { d: path("M 0 50 C 150 50 150 20 300 20 C 450 20 450 50 600 50"); }
+  50% { d: path("M 0 50 C 150 50 150 80 300 80 C 450 80 450 50 600 50"); }
+  100% { d: path("M 0 50 C 150 50 150 20 300 20 C 450 20 450 50 600 50"); }
+}
+
+.floatingToken {
+  animation: float 3s ease-in-out infinite, fadeInOut 4s ease-in-out infinite;
+}
+
+.codeCompletion {
+  @apply fixed left-0 font-mono text-xs opacity-60;
+  background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.helix {
+  @apply absolute w-full h-full;
+  perspective: 1000px;
+}
+
+.thoughtBubble {
+  @apply absolute rounded-full bg-primary/5 backdrop-blur-sm;
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+.matrixRain {
+  @apply absolute inset-0 opacity-10 font-mono text-xs overflow-hidden;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+@keyframes rotate3D {
+  from { transform: rotateY(0deg) rotateX(60deg); }
+  to { transform: rotateY(360deg) rotateX(60deg); }
+}
+
+@keyframes think {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
+.helixContainer {
+  animation: rotate3D 20s linear infinite;
+  transform-style: preserve-3d;
+}
+
+.thoughtAnimation {
+  animation: think 4s ease-in-out infinite;
+}
+
+.chatContainer {
+  @apply relative w-full max-w-4xl mx-auto rounded-lg bg-background/40 backdrop-blur-md p-6;
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
+  box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.1);
+}
+
+.llmArchitecture {
+  @apply relative flex flex-row justify-between items-center my-8;
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .llmArchitecture {
+    width: 500px;
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .llmArchitecture {
+    width: 400px;
+    height: 300px;
+    justify-content: center; /* Center the graph */
+    margin: 0 auto; /* Ensure it is centered */
+  }
+}
+
+@media (max-width: 480px) {
+  .llmArchitecture {
+    width: 300px;
+    height: 250px;
+    justify-content: center; /* Center the graph */
+    margin: 0 auto; /* Ensure it is centered */
+  }
+}
+
+.layer {
+  @apply absolute flex flex-col items-center gap-8;
+  height: 100%;
+}
+
+.node {
+  @apply w-6 h-6 rounded-full bg-white/20;
+  position: relative;
+  z-index: 2;
+  transition: all 0.1s ease-out; /* Reduced from 0.4s */
+}
+
+.nodeActive {
+  @apply bg-primary;
+  box-shadow: 0 0 15px var(--primary);
+  transform: scale(1.2);
+}
+
+.weight {
+  @apply absolute bg-primary/5;
+  transform-origin: left center;
+  z-index: 1;
+  transition: all 0.2s ease-in-out;
+}
+
+.weightActive {
+  @apply bg-primary;
+  filter: brightness(1.5) blur(0.5px);
+  opacity: 0.8;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.tokenOutput:nth-child(odd) {
+  background: linear-gradient(135deg, var(--tertiary), var(--quaternary));
+}
+
+.tokenOutput:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1); }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.tokenContainer {
+  @apply flex flex-col gap-2;
+  width: 100%;
+}
+
+.outputTokenContainer {
+  @apply flex gap-4;
+  width: 100%;
+}
+
+.column {
+  @apply flex flex-col gap-2;
+  width: 50%;
+}
+
+/* Add more specific styles... */

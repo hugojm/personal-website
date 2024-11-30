@@ -1,15 +1,14 @@
-
 import Navigation from './Navigation';
 
-function Layout({ children }: { children: React.ReactNode }) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Navigation />
-      <main className="pt-16">
+      <div className="relative z-0 pt-[100px]"> {/* Ensure padding-top */}
         {children}
-      </main>
+      </div>
     </div>
   );
-}
+};
 
 export default Layout;

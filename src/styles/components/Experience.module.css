@@ -1,0 +1,59 @@
+.experience {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.experience h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.experienceItem {
+  padding: 2rem;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.experienceItem:hover {
+  transform: translateY(-2px);
+}
+
+.company {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--primary);
+}
+
+.role {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.metadata {
+  display: flex;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.responsibilities {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  color: var(--text-primary);
+}
+
+.responsibilities li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}

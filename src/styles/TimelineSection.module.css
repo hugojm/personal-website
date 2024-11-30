@@ -1,0 +1,691 @@
+.timelineSection {
+  position: relative;
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.timelineIntro {
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards;
+}
+
+.mainTitle {
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, var(--accent-color), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.introText {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(to right, var(--accent-color), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.timeline {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: var(--accent-color);
+}
+
+.timelineItem {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.6s ease;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.timelineItem.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timelineYear {
+  background: var(--accent-color);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  margin: 0 2rem;
+}
+
+.timelineDuration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 150px;
+}
+
+.duration {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 0.5rem;
+}
+
+.timelineContent {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.timelineContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at top right,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.timelineContent:hover {
+  transform: translateY(-5px);
+}
+
+.headerContent {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.headerContent h3 {
+  color: var(--accent-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.headerContent h4 {
+  margin: 0 0 0.25rem 0;
+  color: #fff;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.responsibilities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.responsibilities li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.responsibilities li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+}
+
+.technologiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.technologyItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.technologyItem:hover {
+  transform: translateY(-5px);
+}
+
+.techIcon {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+.yearNavigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin: 2rem 0 4rem;
+  position: relative;
+}
+
+.yearNavigation::before {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.yearIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.yearDot {
+  width: 16px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.yearLabel {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.activeYear .yearDot {
+  background: var(--accent-color);
+  transform: scale(1.2);
+}
+
+.activeYear .yearLabel {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.yearIndicator:hover .yearDot {
+  background: var(--accent-color);
+  transform: scale(1.2);
+}
+
+.yearIndicator:hover .yearLabel {
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+  }
+  
+  .timelineItem {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 40px;
+  }
+  
+  .timelineYear {
+    margin: 0 0 1rem 0;
+  }
+  
+  .timelineContent {
+    max-width: 100%;
+  }
+
+  .technologiesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mainTitle {
+    font-size: 2.5rem;
+  }
+  
+  .introText {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .yearNavigation {
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem;
+    justify-content: flex-start;
+  }
+  
+  .yearNavigation::before {
+    width: calc(100% - 2rem);
+  }
+  
+  .yearLabel {
+    font-size: 0.8rem;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+
+.header h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  background: linear-gradient(45deg, var(--accent-color), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.timelineContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timelineScroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2rem 0;
+}
+
+.timelineScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.timelineCard {
+  min-width: 300px;
+  max-width: 350px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  scroll-snap-align: start;
+}
+
+.scrollButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.scrollButton:hover {
+  background: var(--accent-color);
+}
+
+.floatingTitle {
+  text-align: left;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floatingTitle h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, var(--accent-color), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.titleHighlight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.separator {
+  color: var(--accent-color);
+}
+
+.role {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.headerLeft h3 {
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  margin: 0.25rem 0;
+}
+
+.headerLeft h4 {
+  font-size: 0.9rem;
+  color: #fff;
+  margin: 0;
+}
+
+.headerRight {
+  text-align: right;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tech {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.tech span {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.responsibilities {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .timelineCard {
+    min-width: 300px;
+  }
+  
+  .scrollButton {
+    display: none;
+  }
+
+  .floatingTitle {
+    text-align: center;
+  }
+
+  .titleHighlight {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .separator {
+    display: none;
+  }
+}
+
+.progressIndicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-color);
+  transform-origin: 0%;
+  z-index: 100;
+}
+
+.heroSection {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.skillBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+}
+
+.experienceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experienceCard {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.cardContent {
+  padding: 2rem;
+}
+
+.timeIndicator {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  text-align: right;
+}
+
+.year {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.highlight {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent-color);
+}
+
+.skillCategories {
+  margin-top: 1.5rem;
+}
+
+.category {
+  margin-bottom: 1rem;
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    height: 40vh;
+  }
+  
+  .experienceGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.navigation {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 1rem 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.navYears {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.yearButton {
+  position: relative;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.yearButton:hover {
+  color: #fff;
+}
+
+.yearText {
+  position: relative;
+  z-index: 1;
+}
+
+.yearIndicator {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+.activeYear {
+  color: #fff;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    padding: 0.5rem;
+  }
+
+  .navYears {
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.5rem;
+    justify-content: flex-start;
+  }
+
+  .yearButton {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    white-space: nowrap;
+  }
+}

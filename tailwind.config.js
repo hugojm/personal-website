@@ -1,6 +1,9 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    // ...existing code...
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -18,6 +21,11 @@ module.exports = {
           DEFAULT: '#6366f1',
           light: '#818cf8',
           dark: '#4f46e5'
+        },
+        secondary: {
+          DEFAULT: '#ffed4a',
+          light: '#fff9c2',
+          dark: '#facc15'
         },
         dark: '#0f172a',
         light: '#f8fafc',
@@ -51,6 +59,7 @@ module.exports = {
       animation: {
         'gradient': 'gradient 8s linear infinite',
         'float': 'float 3s ease-in-out infinite',
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         gradient: {

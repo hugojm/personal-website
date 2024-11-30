@@ -1,0 +1,15 @@
+.techIcon {
+  composes: group from global;
+  @apply flex flex-col items-center p-6 rounded-xl
+         hover:bg-primary/5 transition-all duration-300 ease-out
+         hover:scale-105;
+}
+
+.iconWrapper {
+  @apply mb-4 transform transition-all duration-300 
+         group-hover:scale-110 group-hover:text-primary;
+}
+
+.techName {
+  @apply text-foreground-muted group-hover:text-primary transition-colors;
+}
