@@ -1,7 +1,7 @@
-import { useRef,  } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaPython, FaAws, FaDatabase, FaRobot, FaBrain } from 'react-icons/fa';
-import {  SiOpenai, SiPytorch } from 'react-icons/si';
+import { SiOpenai, SiPytorch } from 'react-icons/si';
 import styles from '../styles/TimelineSection.module.css';
 
 interface SkillCategory {
@@ -29,7 +29,7 @@ const timelineData: TimelineItem[] = [
   {
     year: "2023",
     duration: "Dec 2023 - Present",
-    title: "Machine Learning Engineer",
+    title: "ML Engineer",
     company: "RavenPack",
     location: "Marbella, Spain",
     highlight: "Specialized in NLP and Transformer Models",
@@ -102,30 +102,6 @@ const TimelineSection = () => {
   return (
     <section className={styles.timelineSection} ref={containerRef}>
       <motion.div className={styles.progressIndicator} style={{ scaleX: progressBar }} />
-      
-      <div className={styles.heroSection}>
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={styles.mainTitle}
-        >
-          AI & Machine Learning Engineer
-        </motion.h1>
-        <motion.div className={styles.skillBadges}>
-          {["Neural Networks", "NLP", "MLOps", "Cloud Infrastructure"].map((skill, i) => (
-            <motion.span 
-              key={skill}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className={styles.badge}
-            >
-              {skill}
-            </motion.span>
-          ))}
-        </motion.div>
-      </div>
-
       <div className={styles.experienceGrid}>
         {timelineData.map((item, index) => (
           <motion.div
@@ -141,11 +117,9 @@ const TimelineSection = () => {
                 <span className={styles.year}>{item.year}</span>
                 <span className={styles.duration}>{item.duration}</span>
               </div>
-              
               <h3>{item.title}</h3>
               <h4>{item.company}</h4>
               <p className={styles.highlight}>{item.highlight}</p>
-
               <div className={styles.skillCategories}>
                 {item.skillCategories.map((category, idx) => (
                   <div key={idx} className={styles.category}>

@@ -2,7 +2,7 @@
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background: linear-gradient(to bottom, var(--background), #1a1a1a);
+  background: transparent; /* Ensure background is transparent */
 }
 
 .content {
@@ -10,12 +10,12 @@
   z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem; /* Reduced from 4rem */
+  padding: 2rem;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 2rem; /* Reduced from 4rem */
+  margin-bottom: 2rem;
 }
 
 .title {
@@ -25,13 +25,13 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem; /* Reduced from 1.5rem */
+  margin-bottom: 1rem;
 }
 
 .subtitle {
   font-size: 1.5rem;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem; /* Reduced from 2rem */
+  margin-bottom: 1.5rem;
 }
 
 .timelineWrapper {
@@ -39,7 +39,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  padding: 1.5rem; /* Reduced from 2rem */
+  padding: 1.5rem;
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
@@ -61,7 +61,24 @@
 }
 
 .timelineItem {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.timelineItem .year {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.timelineItem .title {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.timelineItem .dates {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
 }
 
 .timelineContent {
@@ -79,6 +96,33 @@
   
   .subtitle {
     font-size: 1.2rem;
+  }
+
+  .timelineWrapper {
+    padding: 1rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 1.5rem;
+  }
+
+  .timelineItem .year {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timelineItem .title {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .timelineItem .dates {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timelineContent {
+    padding: 0.75rem;
   }
 }
 

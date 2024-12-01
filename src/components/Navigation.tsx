@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import styles from '@/styles/components/Navigation.module.css';
+import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for the menu
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+  const navMenuRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,12 +20,33 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        navMenuRef.current &&
+        !navMenuRef.current.contains(event.target as Node) &&
+        isOpen
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/projects', label: 'Projects' },
     { href: '/contact', label: 'Contact' }
   ];
+
+  const handleNavItemClick = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -50,61 +73,78 @@ const Navigation = () => {
             </Link>
           </motion.div>
 
+          <div className={styles.desktopMenu}>
+            {navItems.map((item) => (
+              <Link 
+                key={item.href}
+                className={`${styles.navLink} ${
+                  router.pathname === item.href ? styles.active : ''
+                }`}
+                href={item.href}
+              >
+                {item.label}
+                {router.pathname === item.href && (
+                  <motion.div 
+                    className={styles.activeIndicator}
+                    layoutId="activeIndicator"
+                  />
+                )}
+              </Link>
+            ))}
+          </div>
+
           <motion.div 
             className={styles.menuIcon} 
             onClick={() => setIsOpen(!isOpen)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            {[1, 2, 3].map((bar) => (
-              <motion.div
-                key={bar}
-                className={`${styles[`bar${bar}`]} ${isOpen ? styles[`bar${bar}Open`] : ''}`}
-                initial={false}
-                animate={isOpen ? 'open' : 'closed'}
-              />
-            ))}
+            {isOpen ? (
+              <FaTimes className={styles.icon} />
+            ) : (
+              <FaBars className={styles.icon} />
+            )}
           </motion.div>
 
-          <ul className={`${styles.navMenu} ${isOpen ? styles.navMenuOpen : ''}`}>
-            {navItems.map((item) => (
-              <motion.li 
-                key={item.href}
-                className={styles.navItem}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.ul 
+                ref={navMenuRef} // Add ref to the navigation menu
+                className={`${styles.navMenu} ${styles.navMenuOpen}`}
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ duration: 0.3 }}
               >
-                <Link 
-                  className={`${styles.navLink} ${
-                    router.pathname === item.href ? styles.active : ''
-                  }`}
-                  href={item.href}
-                >
-                  {item.label}
-                  {router.pathname === item.href && (
-                    <motion.div 
-                      className={styles.activeIndicator}
-                      layoutId="activeIndicator"
-                    />
-                  )}
-                </Link>
-              </motion.li>
-            ))}
-          </ul>
+                {navItems.map((item) => (
+                  <motion.li 
+                    key={item.href}
+                    className={styles.navItem}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleNavItemClick}
+                  >
+                    <Link 
+                      className={`${styles.navLink} ${
+                        router.pathname === item.href ? styles.active : ''
+                      }`}
+                      href={item.href}
+                    >
+                      {item.label}
+                      {router.pathname === item.href && (
+                        <motion.div 
+                          className={styles.activeIndicator}
+                          layoutId="activeIndicator"
+                        />
+                      )}
+                    </Link>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            )}
+          </AnimatePresence>
         </div>
       </motion.nav>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            className={styles.overlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 };

@@ -1,34 +1,70 @@
-import Hero from '@/components/Hero';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import styles from '../styles/Projects.module.css';
+
+const ParticleField = dynamic(() => import('@/components/ParticleField'), { ssr: false });
+const MeshBackground = dynamic(() => import('@/components/MeshBackground'), { ssr: false });
+const Scene3D = dynamic(() => import('@/components/Scene3D'), { ssr: false });
 
 const Projects = () => {
+  const { scrollYProgress } = useScroll();
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+
   return (
-    <>
-      <Hero 
-        title="Projects" 
-        subtitle="Here are some of my recent works and contributions" 
-      />
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className={styles.container}>
+      <ParticleField mousePosition={{ x: 0, y: 0 }} />
+      <MeshBackground />
+
+      <motion.div
+        className={styles.backgroundEffect}
+        style={{ y: backgroundY }}
+      >
+        <Scene3D />
+      </motion.div>
+
+      <motion.div
+        className={styles.content}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div
+          className={styles.header}
+          initial={{ y: 20 }}
+          animate={{ y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h1 className={styles.title}>Projects</h1>
+          <p className={styles.subtitle}>
+            Here are some of my recent works and contributions
+          </p>
+        </motion.div>
+
+        <motion.div
+          className={styles.projectsWrapper}
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className={styles.projectsGrid}>
             <ProjectCard
-              title="Project 1"
-              description="Description of project 1"
-              technologies={['React', 'TypeScript', 'Tailwind']}
+              title="Organizer of PyData Malaga"
+              description="As an organizer of PyData Malaga, I coordinate weekly conferences where we discuss various Python and data topics, fostering a community of data enthusiasts."
+              technologies={['Python', 'Data Science', 'Community Engagement']}
+              link=" https://www.meetup.com/es-ES/pydata-malaga/"
+              image="/images/pydata.png"
             />
-            <ProjectCard
-              title="Project 2"
-              description="Description of project 2"
-              technologies={['Next.js', 'Node.js', 'MongoDB']}
-            />
-            <ProjectCard
-              title="Project 3"
-              description="Description of project 3"
-              technologies={['Python', 'Django', 'PostgreSQL']}
-            />
+            {/* <ProjectCard
+              title="AI Chatbot Development"
+              description="Developed an AI chatbot for customer service using NLP techniques, improving customer satisfaction by 40%."
+              technologies={['Python', 'NLP', 'Machine Learning']}
+              link="https://github.com/yourusername/ai-chatbot"
+              image="/images/ai-chatbot.jpg"
+            /> */}
           </div>
-        </div>
-      </section>
-    </>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
@@ -36,19 +72,30 @@ interface ProjectCardProps {
   title: string;
   description: string;
   technologies: string[];
+  link?: string;
+  image?: string;
 }
 
-const ProjectCard = ({ title, description, technologies }: ProjectCardProps) => (
-  <><div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"></div><h3 className="text-xl font-semibold mb-3">{title}</h3><p className="text-gray-600 mb-4">{description}</p><div className="flex flex-wrap gap-2">
-        {technologies.map((tech, index) => (
-            <span
-                key={index}
-                className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700"
-            >
-                {tech}
-            </span>
-        ))}
-    </div></>
+const ProjectCard = ({ title, description, technologies, link, image }: ProjectCardProps) => (
+  <div className={styles.projectCard}>
+    {image && (
+      <img src={image} alt={title} className={styles.projectImage} />
+    )}
+    <h3 className={styles.projectTitle}>{title}</h3>
+    <p className={styles.projectDescription}>{description}</p>
+    <div className={styles.technologies}>
+      {technologies.map((tech, index) => (
+        <span key={index} className={styles.techBadge}>
+          {tech}
+        </span>
+      ))}
+    </div>
+    {link && (
+      <a href={link} className={styles.projectLink} target="_blank" rel="noopener noreferrer">
+        Learn More
+      </a>
+    )}
+  </div>
 );
 
 export default Projects;

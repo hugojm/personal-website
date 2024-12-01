@@ -5,7 +5,7 @@
   right: 0;
   z-index: 1000;
   padding: 1rem 0;
-  background: transparent;
+  background: transparent; /* Ensure background is transparent */
   transition: all 0.3s ease;
 }
 
@@ -34,48 +34,61 @@
   transition: all 0.3s ease;
 }
 
-.menuIcon {
+.desktopMenu {
   display: none;
+}
+
+.menuIcon {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   padding: 0.5rem;
+  z-index: 1001; /* Ensure the icon is above other elements */
 }
 
-.menuIcon div {
-  width: 25px;
-  height: 2px;
-  background-color: #333;
-  margin: 6px 0;
-  transition: all 0.3s ease;
+.icon {
+  font-size: 1.8rem;
+  color: #ffffff;
+  transition: color 0.3s ease;
 }
 
-.bar1, .bar2, .bar3 {
-  width: 25px;
-  height: 2px;
-  background-color: #333;
-  margin: 6px 0;
-  transition: 0.3s;
+.icon:hover {
+  color: var(--accent-color);
 }
 
 .navMenu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 100vh;
+  width: 100%;
+  max-width: 300px;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
   display: flex;
-  gap: 2rem;
-  align-items: center;
+  flex-direction: column;
+  padding: 5rem 2rem;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.navMenuOpen {
+  right: 0;
 }
 
 .navItem {
-  margin-left: 2rem;
+  margin-bottom: 2rem;
 }
 
 .navLink {
-  position: relative;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
   transition: color 0.3s ease;
-  font-size: 0.9rem;
-  padding: 0.5rem 0;
 }
 
 .navLink:hover {
-  color: #fff;
+  color: #ffffff;
 }
 
 .active {
@@ -96,22 +109,11 @@
   margin-top: 4rem; /* Adjust this value based on the height of your navbar */
 }
 
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 49;
-}
-
-.overlayOpen {
-  display: block;
-}
-
 @media (max-width: 768px) {
+  .desktopMenu {
+    display: none;
+  }
+
   .menuIcon {
     display: flex;
     flex-direction: column;
@@ -158,5 +160,20 @@
 
   .bar3Open {
     transform: rotate(45deg) translate(-5px, -6px);
+  }
+}
+
+@media (min-width: 769px) {
+  .desktopMenu {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .menuIcon {
+    display: none;
+  }
+
+  .navMenu {
+    display: none;
   }
 }

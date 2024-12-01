@@ -43,9 +43,9 @@ const About = () => {
 
         <motion.div 
           className={styles.timelineWrapper}
-          initial={{ y: 30, opacity: 0 }} // Reduced y offset from 50
+          initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }} // Reduced delay from 0.4
+          transition={{ delay: 0.3 }}
         >
           <TimelineSection />
         </motion.div>

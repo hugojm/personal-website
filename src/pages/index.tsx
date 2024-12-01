@@ -1,8 +1,9 @@
-import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
+import { motion, useTransform, useMotionValue } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from '@/styles/Home.module.css';
+import MeshBackground from '@/components/MeshBackground';
 
 const Scene3D = dynamic(() => import('@/components/Scene3D'), { ssr: false });
 const ParticleField = dynamic(() => import('@/components/ParticleField'), { ssr: false });
@@ -56,7 +57,7 @@ const useMousePosition = () => {
 
 const ProfileSection = () => (
   <motion.section 
-    className={styles.profileSection}
+    className={styles.ProfileSection}
     initial={{ y: 20 }}
     animate={{ y: 0 }}
     transition={{ delay: 0.2 }}
@@ -101,7 +102,7 @@ const ProfileSection = () => (
   </motion.section>
 );
 
-const HeroSection = ({ heroRotateX, heroRotateY }) => (
+const HeroSection = ({ heroRotateX, heroRotateY }: { heroRotateX: any, heroRotateY: any }) => (
   <motion.section 
     className={styles.heroSection}
     initial={{ y: 20 }}
@@ -157,25 +158,22 @@ const HeroSection = ({ heroRotateX, heroRotateY }) => (
 );
 
 export default function Home() {
-  const { scrollYProgress } = useScroll();
   const { mouseX, mouseY } = useMousePosition();
   const windowSize = useWindowSize();
   
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const heroRotateX = useTransform(mouseY, [0, windowSize.height], [5, -5]);
   const heroRotateY = useTransform(mouseX, [0, windowSize.width], [-5, 5]);
 
   return (
     <div className={styles.container}>
       <ParticleField mousePosition={{ x: mouseX.get(), y: mouseY.get() }} />
-      <div className={styles.cursor} style={{ 
-        left: mouseX.get(), 
-        top: mouseY.get() 
-      }} />
+      <Scene3D />
+      <MeshBackground />
+
       
-      <motion.div className={styles.backgroundEffect} style={{ y: backgroundY }}>
+      {/* <motion.div className={styles.backgroundEffect} style={{ y: backgroundY }}>
         <Scene3D />
-      </motion.div>
+      </motion.div> */}
 
       <motion.div 
         className={styles.content}
@@ -185,11 +183,11 @@ export default function Home() {
       >
         <ProfileSection />
         <HeroSection heroRotateX={heroRotateX} heroRotateY={heroRotateY} />
-        <motion.section className={styles.techSection}>
+        {/* <motion.section className={styles.techSection}>
           <div className={styles.techSphere}>
             <Scene3D />
           </div>
-        </motion.section>
+        </motion.section> */}
       </motion.div>
     </div>
   );
