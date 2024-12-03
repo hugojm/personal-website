@@ -17,7 +17,6 @@ const SEO = {
     ],
   },
   twitter: {
-    handle: '@hugojm_', // Replace with your twitter handler
     title: 'Hugo Jimenez - Machine Learning Engineer',
     description: 'Explore the portfolio of Hugo Jimenez, a Machine Learning Engineer specializing in AI, data science, and software development.',
     image: 'https://www.hugo-jimenez.com/link-preview-image.png', // Replace with your image URL
