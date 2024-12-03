@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.hugo-jimenez.com
+
+# Sitemaps
+Sitemap: https://www.hugo-jimenez.com/sitemap.xml
