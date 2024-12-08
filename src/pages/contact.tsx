@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import styles from '../styles/Contact.module.css';
@@ -7,11 +7,8 @@ import { FiSend } from 'react-icons/fi'; // Import send icon
 
 const ParticleField = dynamic(() => import('@/components/ParticleField'), { ssr: false });
 const MeshBackground = dynamic(() => import('@/components/MeshBackground'), { ssr: false });
-const Scene3D = dynamic(() => import('@/components/Scene3D'), { ssr: false });
 
 const Contact = () => {
-  const { scrollYProgress } = useScroll();
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -57,55 +54,39 @@ const Contact = () => {
       <MeshBackground />
 
       <motion.div
-        className={styles.backgroundEffect}
-        style={{ y: backgroundY }}
-      >
-        <Scene3D />
-      </motion.div>
-
-      <motion.div
         className={styles.content}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
-        <motion.div
-          className={styles.header}
-          initial={{ y: 20 }}
-          animate={{ y: 0 }}
-          transition={{ delay: 0.2 }}
+        <motion.h1
+          className={styles.pageTitle}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className={styles.title}>Get in Touch</h1>
-          <p className={styles.subtitle}>
-            Feel free to reach out for collaborations or just a friendly chat.
-          </p>
-        </motion.div>
+          Get in Touch
+        </motion.h1>
 
-        <motion.div
-          className={styles.contactWrapper}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
+        <div className={styles.contactWrapper}>
           <div className={styles.contactInfo}>
-            <p className={styles.contactHeading}>You can reach me at:</p>
             <div className={styles.contactMethods}>
               <a href="mailto:hello@hugo-jimenez.com" className={styles.contactMethod}>
-                <FaEnvelope className={styles.icon} aria-hidden="true" />
-                <span>Email</span>
+                <FaEnvelope className={styles.icon} />
+                <span>hello@hugo-jimenez.com</span>
               </a>
               <a href="https://github.com/hugojm" target="_blank" rel="noopener noreferrer" className={styles.contactMethod}>
-                <FaGithub className={styles.icon} aria-hidden="true" />
-                <span>GitHub</span>
+                <FaGithub className={styles.icon} />
+                <span>github.com/hugojm</span>
               </a>
               <a href="https://www.linkedin.com/in/huugojimenez" target="_blank" rel="noopener noreferrer" className={styles.contactMethod}>
-                <FaLinkedin className={styles.icon} aria-hidden="true" />
-                <span>LinkedIn</span>
+                <FaLinkedin className={styles.icon} />
+                <span>linkedin.com/in/huugojimenez</span>
               </a>
             </div>
           </div>
 
-          <form className={styles.contactForm} onSubmit={handleSubmit} aria-label="Contact Form">
+          <form className={styles.contactForm} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
               <label htmlFor="name">Name</label>
               <input
@@ -145,23 +126,25 @@ const Contact = () => {
               type="submit"
               className={styles.submitButton}
               disabled={isSubmitting}
-              aria-disabled={isSubmitting}
             >
-              <FiSend className={styles.sendIcon} aria-hidden="true" /> Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+              <FiSend className={styles.sendIcon} />
             </button>
             {isSubmitted && (
-              <p className={styles.successMessage} role="status">
-                Thank you! Your message has been sent successfully.
-              </p>
+              <motion.p 
+                className={styles.successMessage}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                Message sent successfully!
+              </motion.p>
             )}
           </form>
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
 };
-
-
-
 
 export default Contact;

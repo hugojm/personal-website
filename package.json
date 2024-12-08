@@ -14,7 +14,7 @@
     "@react-three/fiber": "^8.17.10",
     "@sendgrid/mail": "^8.1.4",
     "framer-motion": "^11.12.0",
-    "next": "^14.2.18",
+    "next": "^15.0.4",
     "next-seo": "^6.6.0",
     "next-sitemap": "^4.2.3",
     "react": "^18.3.1",
@@ -24,7 +24,8 @@
     "react-particles": "^2.12.2",
     "three": "^0.171.0",
     "tsparticles": "^2.12.0",
-    "tsparticles-engine": "^2.12.0"
+    "tsparticles-engine": "^2.12.0",
+    "watchpack": "^2.4.2"
   },
   "devDependencies": {
     "@types/node": "^20.17.9",

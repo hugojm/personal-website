@@ -1,67 +1,48 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import styles from '../styles/Projects.module.css';
 
 const ParticleField = dynamic(() => import('@/components/ParticleField'), { ssr: false });
 const MeshBackground = dynamic(() => import('@/components/MeshBackground'), { ssr: false });
-const Scene3D = dynamic(() => import('@/components/Scene3D'), { ssr: false });
 
 const Projects = () => {
-  const { scrollYProgress } = useScroll();
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   return (
     <div className={styles.container}>
       <ParticleField mousePosition={{ x: 0, y: 0 }} />
       <MeshBackground />
 
-      <motion.div
-        className={styles.backgroundEffect}
-        style={{ y: backgroundY }}
-      >
-        <Scene3D />
-      </motion.div>
-
-      <motion.div
-        className={styles.content}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.div
-          className={styles.header}
-          initial={{ y: 20 }}
-          animate={{ y: 0 }}
-          transition={{ delay: 0.2 }}
+      <motion.div className={styles.content}>
+        <motion.h1
+          className={styles.pageTitle}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className={styles.title}>Projects</h1>
-          <p className={styles.subtitle}>
-            Here are some of my recent works and contributions
-          </p>
-        </motion.div>
+          Featured Projects
+        </motion.h1>
 
-        <motion.div
-          className={styles.projectsWrapper}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
+        <motion.div 
+          className={styles.projectsGrid}
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 }
+            }
+          }}
+          initial="hidden"
+          animate="show"
         >
-          <div className={styles.projectsGrid}>
-            <ProjectCard
-              title="Organizer of PyData Malaga"
-              description="As an organizer of PyData Malaga, I coordinate weekly conferences where we discuss various Python and data topics, fostering a community of data enthusiasts."
-              technologies={['Python', 'Data Science', 'Community Engagement']}
-              link=" https://www.meetup.com/es-ES/pydata-malaga/"
-              image="/images/pydata.png"
-            />
-            {/* <ProjectCard
-              title="AI Chatbot Development"
-              description="Developed an AI chatbot for customer service using NLP techniques, improving customer satisfaction by 40%."
-              technologies={['Python', 'NLP', 'Machine Learning']}
-              link="https://github.com/yourusername/ai-chatbot"
-              image="/images/ai-chatbot.jpg"
-            /> */}
-          </div>
+          <ProjectCard
+            title="PyData Malaga Community"
+            description="Leading the PyData Malaga community, organizing weekly conferences and workshops to discuss cutting-edge Python and data science topics. Building a vibrant ecosystem of data professionals and enthusiasts."
+            technologies={['Community Building', 'Python', 'Data Science', 'Machine Learning']}
+            link="https://www.meetup.com/es-ES/pydata-malaga/"
+            image="/images/pydata.png"
+          />
+          {/* Add more ProjectCard components as needed */}
         </motion.div>
       </motion.div>
     </div>
@@ -77,25 +58,51 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ title, description, technologies, link, image }: ProjectCardProps) => (
-  <div className={styles.projectCard}>
+  <motion.div 
+    className={styles.projectCard}
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      show: { opacity: 1, y: 0 }
+    }}
+    whileHover={{ y: -5 }}
+  >
     {image && (
-      <img src={image} alt={title} className={styles.projectImage} />
+      <motion.div 
+        className={styles.imageContainer}
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
+      >
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className={styles.projectImage}
+          quality={90}
+          priority
+          style={{ objectFit: 'cover' }}
+        />
+      </motion.div>
     )}
     <h3 className={styles.projectTitle}>{title}</h3>
     <p className={styles.projectDescription}>{description}</p>
     <div className={styles.technologies}>
-      {technologies.map((tech, index) => (
-        <span key={index} className={styles.techBadge}>
-          {tech}
-        </span>
+      {technologies.map((tech) => (
+        <span key={tech} className={styles.techBadge}>{tech}</span>
       ))}
     </div>
     {link && (
-      <a href={link} className={styles.projectLink} target="_blank" rel="noopener noreferrer">
-        Learn More
-      </a>
+      <motion.a
+        href={link}
+        className={styles.projectLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        View Project
+      </motion.a>
     )}
-  </div>
+  </motion.div>
 );
 
 export default Projects;

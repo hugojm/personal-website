@@ -2,7 +2,13 @@
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: transparent; /* Ensure background is transparent */
+  transition: background 0.3s ease;
 }
 
 .content {
@@ -11,27 +17,43 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.title {
-  font-size: 3.5rem;
+.pageTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
-  background: linear-gradient(45deg, #fff, #e0e0e0);
+  background: linear-gradient(135deg, #fff 0%, #64748b 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  line-height: 1.2;
+  text-align: center;
+  position: relative;
 }
 
-.subtitle {
-  font-size: 1.5rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+.pageTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+}
+
+.introText {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  letter-spacing: 0.02em;
 }
 
 .timelineWrapper {
@@ -39,10 +61,11 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: clamp(1rem, 3vw, 2rem);
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+  margin-top: 2rem;
 }
 
 .timelineWrapper::before {
@@ -86,8 +109,12 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+
   .content {
-    padding: 1.5rem 1rem;
+    padding: 1rem;
   }
   
   .title {
@@ -100,6 +127,7 @@
 
   .timelineWrapper {
     padding: 1rem;
+    margin-top: 1.5rem;
   }
 
   .timelineItem {
@@ -124,6 +152,26 @@
   .timelineContent {
     padding: 0.75rem;
   }
+
+  .header {
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .subtitleWrapper {
+    padding: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .title::after {
+    width: 40px;
+    height: 3px;
+  }
 }
 
 .glowText {
@@ -139,5 +187,217 @@
   to {
     text-shadow: 0 0 20px rgba(0, 255, 255, 0.8),
                  0 0 30px rgba(0, 255, 255, 0.6);
+  }
+}
+
+.skillsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.skillBadge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+@media (max-width: 768px) {
+  .skillsContainer {
+    gap: 0.5rem;
+  }
+
+  .skillBadge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+.experienceCard {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.experienceCard:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.companyInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.companyLogo {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.metric {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.metricValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+}
+
+.metricLabel {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.techBadge {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.experienceSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.cardHeader {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.roleInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.roleTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.companyName {
+  font-size: 1.1rem;
+  color: var(--accent-color);
+}
+
+.periodLocation {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.impactStatement {
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--text-highlight);
+  line-height: 1.6;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.responsibilities {
+  margin-bottom: 1.5rem;
+}
+
+.responsibilitiesTitle {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.responsibilitiesList {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.responsibilityItem {
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.responsibilityItem::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+  .experienceCard {
+    padding: 1rem;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .roleTitle {
+    font-size: 1.25rem;
+  }
+
+  .responsibilitiesTitle {
+    font-size: 1rem;
+  }
+
+  .responsibilityItem {
+    font-size: 0.9rem;
   }
 }
