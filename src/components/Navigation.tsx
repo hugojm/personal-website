@@ -1,152 +1,113 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
-import styles from '@/styles/components/Navigation.module.css';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for the menu
+
+const navItems = [
+  { href: '/', label: 'Index' },
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Work' },
+  { href: '/blog', label: 'Journal' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const SlideLink = ({ label, active }: { label: string; active: boolean }) => (
+  <span className="swiss-link text-xs font-bold tracking-widest uppercase leading-none">
+    <span className={active ? 'text-swiss-accent' : ''}>{label}</span>
+    <span>{label}</span>
+  </span>
+);
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
-  const navMenuRef = useRef<HTMLUListElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    setIsOpen(false);
+  }, [router.pathname]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        navMenuRef.current &&
-        !navMenuRef.current.contains(event.target as Node) &&
-        isOpen
-      ) {
+    if (!isOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (sheetRef.current && !sheetRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
   }, [isOpen]);
 
-  const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects' },
-    { href: '/contact', label: 'Contact' },
-    { href: '/blog', label: 'Blog' } // Add new blog item
-  ];
-
-  const handleNavItemClick = () => {
-    setIsOpen(false);
-  };
-
   return (
-    <>
-      <motion.nav 
-        className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className={styles.container}>
-          <motion.div
-            className={styles.logoContainer}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link className={styles.logo} href="/">
-              <motion.span
-                initial={{ backgroundPosition: '0%' }}
-                whileHover={{ backgroundPosition: '100%' }}
-                transition={{ duration: 0.8 }}
-              >
-                hugo-jimenez
-              </motion.span>
+    <nav className="sticky top-0 z-40 bg-swiss-bg border-b-4 border-swiss-fg">
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
+        <Link
+          href="/"
+          aria-label="Hugo Jimenez — home"
+          className="group flex items-baseline gap-2"
+        >
+          <span className="text-xs font-bold tracking-widest text-swiss-accent">
+            00.
+          </span>
+          <span className="text-base font-black tracking-tight uppercase">
+            Hugo Jimenez
+          </span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-10">
+          {navItems.map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex items-baseline gap-2"
+              aria-current={router.pathname === item.href ? 'page' : undefined}
+            >
+              <span className="text-[10px] font-bold tracking-widest text-swiss-accent">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <SlideLink label={item.label} active={router.pathname === item.href} />
             </Link>
-          </motion.div>
-
-          <div className={styles.desktopMenu}>
-            {navItems.map((item) => (
-              <Link 
-                key={item.href}
-                className={`${styles.navLink} ${
-                  router.pathname === item.href ? styles.active : ''
-                }`}
-                href={item.href}
-              >
-                {item.label}
-                {router.pathname === item.href && (
-                  <motion.div 
-                    className={styles.activeIndicator}
-                    layoutId="activeIndicator"
-                  />
-                )}
-              </Link>
-            ))}
-          </div>
-
-          <motion.div 
-            className={styles.menuIcon} 
-            onClick={() => setIsOpen(!isOpen)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isOpen ? (
-              <FaTimes className={styles.icon} />
-            ) : (
-              <FaBars className={styles.icon} />
-            )}
-          </motion.div>
-
-          <AnimatePresence>
-            {isOpen && (
-              <motion.ul 
-                ref={navMenuRef} // Add ref to the navigation menu
-                className={`${styles.navMenu} ${styles.navMenuOpen}`}
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
-                transition={{ duration: 0.3 }}
-              >
-                {navItems.map((item) => (
-                  <motion.li 
-                    key={item.href}
-                    className={styles.navItem}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleNavItemClick}
-                  >
-                    <Link 
-                      className={`${styles.navLink} ${
-                        router.pathname === item.href ? styles.active : ''
-                      }`}
-                      href={item.href}
-                    >
-                      {item.label}
-                      {router.pathname === item.href && (
-                        <motion.div 
-                          className={styles.activeIndicator}
-                          layoutId="activeIndicator"
-                        />
-                      )}
-                    </Link>
-                  </motion.li>
-                ))}
-              </motion.ul>
-            )}
-          </AnimatePresence>
+          ))}
         </div>
-      </motion.nav>
-    </>
+
+        <button
+          type="button"
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((v) => !v)}
+          className="md:hidden h-10 px-3 border-2 border-swiss-fg text-xs font-bold tracking-widest uppercase hover:bg-swiss-fg hover:text-swiss-bg transition-colors duration-150"
+        >
+          {isOpen ? 'Close' : 'Menu'}
+        </button>
+      </div>
+
+      {isOpen && (
+        <div
+          ref={sheetRef}
+          className="md:hidden border-t-2 border-swiss-fg bg-swiss-bg"
+        >
+          <ul className="px-6 py-2">
+            {navItems.map((item, i) => {
+              const active = router.pathname === item.href;
+              return (
+                <li key={item.href} className="border-b-2 border-swiss-fg last:border-b-0">
+                  <Link
+                    href={item.href}
+                    className={`flex items-baseline gap-3 py-4 text-2xl font-black tracking-tight uppercase ${
+                      active ? 'text-swiss-accent' : 'text-swiss-fg'
+                    }`}
+                  >
+                    <span className="text-xs font-bold tracking-widest text-swiss-accent">
+                      {String(i + 1).padStart(2, '0')}.
+                    </span>
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </nav>
   );
 };
 

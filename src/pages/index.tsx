@@ -1,194 +1,178 @@
-import { motion, useTransform, useMotionValue } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import styles from '@/styles/Home.module.css';
-import MeshBackground from '@/components/MeshBackground';
+import Link from 'next/link';
+import SectionLabel from '@/components/swiss/SectionLabel';
 
-const Scene3D = dynamic(() => import('@/components/Scene3D'), { ssr: false });
-const ParticleField = dynamic(() => import('@/components/ParticleField'), { ssr: false });
-
-const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
-
-    if (typeof window !== 'undefined') {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-      window.addEventListener('resize', handleResize);
-    }
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  return windowSize;
-};
-
-const useMousePosition = () => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [mouseX, mouseY]);
-
-  return { mouseX, mouseY };
-};
-
-const ProfileSection = () => (
-  <motion.section 
-    className={styles.ProfileSection}
-    initial={{ y: 20 }}
-    animate={{ y: 0 }}
-    transition={{ delay: 0.2 }}
-  >
-    <div className={styles.profileContent}>
-      <motion.div 
-        className={styles.profileImage}
-        initial={{ scale: 0.8 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Image
-          src="/images/hugo-jimenez.png"
-          alt="Hugo Jimenez"
-          width={200}
-          height={200}
-          className={styles.avatar}
-          priority
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = '/images/default-avatar.png';
-          }}
-        />
-      </motion.div>
-      
-      <motion.div 
-        className={styles.profileText}
-        initial={{ x: -20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.3 }}
-      >
-        <h1 className={styles.title}>
-          Hi, I&apos;m Hugo Jimenez
-        </h1>
-        <p className={styles.bio}>
-          I&apos;m a Machine Learning Engineer passionate about transforming complex 
-          data into intelligent solutions. Specializing in AI and deep learning, 
-          I build systems that make a difference.
-        </p>
-      </motion.div>
+/**
+ * Editorial portrait panel — a bordered 4:5 frame, the photo cropped
+ * via object-cover so the face anchors the top third. Two small marks
+ * (the red square caption-marker and the corner rule) keep the
+ * Bauhaus geometric vocabulary present without competing with the photo.
+ */
+const Portrait = () => (
+  <figure className="relative">
+    <div className="relative w-full aspect-[4/5] border-2 border-swiss-fg overflow-hidden bg-swiss-muted">
+      <Image
+        src="/images/portrait.jpg"
+        alt="Hugo Jiménez"
+        fill
+        priority
+        sizes="(min-width: 1024px) 33vw, 100vw"
+        className="object-cover object-[center_15%]"
+      />
+      <div
+        aria-hidden
+        className="absolute right-0 top-0 w-10 h-10 md:w-12 md:h-12 border-b-2 border-l-2 border-swiss-fg bg-swiss-bg"
+      />
     </div>
-  </motion.section>
+    <figcaption className="mt-3 flex items-baseline gap-2 text-[10px] font-bold tracking-widest uppercase">
+      <span aria-hidden className="inline-block w-2 h-2 bg-swiss-accent" />
+      Plate 01 · Hugo Jiménez · Marbella
+    </figcaption>
+  </figure>
 );
 
-const HeroSection = ({ heroRotateX, heroRotateY }: { heroRotateX: any, heroRotateY: any }) => (
-  <motion.section 
-    className={styles.heroSection}
-    initial={{ y: 20 }}
-    animate={{ y: 0 }}
-  >
-    <motion.div 
-      className={styles.heroContent}
-      style={{
-        rotateX: heroRotateX,
-        rotateY: heroRotateY,
-      }}
-    >
-      <h1 className={styles.title}>
-        Transforming Ideas into
-        <span className={styles.highlight}>
-          Intelligent Solutions
-        </span>
-      </h1>
-      <motion.p
-        className={styles.subtitle}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
-        Building the future with AI & Machine Learning
-      </motion.p>
-
-      <motion.div
-        className={styles.actionButtons}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
-        <motion.a
-          href="/about"
-          className={`${styles.button} ${styles.primary}`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          View Experience
-        </motion.a>
-        <motion.a
-          href="/projects"
-          className={`${styles.button} ${styles.secondary}`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          See Projects
-        </motion.a>
-      </motion.div>
-    </motion.div>
-  </motion.section>
-);
+const indexLinks = [
+  { href: '/about', label: 'About', meta: 'Bio, focus, communities' },
+  { href: '/projects', label: 'Work', meta: 'Selected projects' },
+  { href: '/about#speaking', label: 'Speaking', meta: 'Berlin Buzzwords · AWS Summit Madrid' },
+  { href: '/blog', label: 'Journal', meta: 'Writing on ML & NLP' },
+  { href: '/contact', label: 'Contact', meta: 'Email, GitHub, LinkedIn' },
+];
 
 export default function Home() {
-  const { mouseX, mouseY } = useMousePosition();
-  const windowSize = useWindowSize();
-  
-  const heroRotateX = useTransform(mouseY, [0, windowSize.height], [5, -5]);
-  const heroRotateY = useTransform(mouseX, [0, windowSize.width], [-5, 5]);
-
   return (
-    <div className={styles.container}>
-      <ParticleField mousePosition={{ x: mouseX.get(), y: mouseY.get() }} />
-      <Scene3D />
-      <MeshBackground />
-
-      
-      {/* <motion.div className={styles.backgroundEffect} style={{ y: backgroundY }}>
-        <Scene3D />
-      </motion.div> */}
-
-      <motion.div 
-        className={styles.content}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <ProfileSection />
-        <HeroSection heroRotateX={heroRotateX} heroRotateY={heroRotateY} />
-        {/* <motion.section className={styles.techSection}>
-          <div className={styles.techSphere}>
-            <Scene3D />
+    <main>
+      {/* ───────── Hero ───────── */}
+      <section className="border-b-4 border-swiss-fg">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          <div className="lg:col-span-8">
+            <SectionLabel number="00" name="Index — 2026" />
+            <h1 className="font-black uppercase tracking-tightest leading-[0.85] text-7xl sm:text-8xl md:text-9xl lg:text-[11rem]">
+              Hugo
+              <br />
+              Jiménez
+            </h1>
+            <p className="mt-8 md:mt-12 max-w-2xl text-lg md:text-xl leading-snug">
+              Machine learning engineer. I build production NLP and
+              retrieval-augmented systems — transformer fine-tuning, evaluation,
+              and the infrastructure to ship models that work in the real world.
+            </p>
+            <p className="mt-4 text-sm font-bold tracking-widest uppercase">
+              <span className="inline-block w-3 h-3 mr-3 bg-swiss-accent align-[2px]" />
+              Currently · RavenPack · Marbella
+            </p>
           </div>
-        </motion.section> */}
-      </motion.div>
-    </div>
+
+          <div className="lg:col-span-4 lg:pl-8 lg:border-l-2 lg:border-swiss-fg">
+            <Portrait />
+            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 text-xs font-bold tracking-widest uppercase">
+              <div>
+                <dt className="text-swiss-accent">Role</dt>
+                <dd className="mt-1">ML Engineer</dd>
+              </div>
+              <div>
+                <dt className="text-swiss-accent">Domain</dt>
+                <dd className="mt-1">NLP · RAG</dd>
+              </div>
+              <div>
+                <dt className="text-swiss-accent">Based</dt>
+                <dd className="mt-1">Marbella, ES</dd>
+              </div>
+              <div>
+                <dt className="text-swiss-accent">Speaking</dt>
+                <dd className="mt-1">2026</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── Index of pages ───────── */}
+      <section className="border-b-4 border-swiss-fg">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-12 md:py-16">
+          <SectionLabel number="01" name="Sections" />
+          <ul>
+            {indexLinks.map((item, i) => (
+              <li key={item.href} className="border-t-2 border-swiss-fg first:border-t-0">
+                <Link
+                  href={item.href}
+                  className="group grid grid-cols-12 gap-4 items-baseline py-6 md:py-10 transition-colors duration-150 hover:bg-swiss-fg hover:text-swiss-bg"
+                >
+                  <span className="col-span-2 md:col-span-1 text-xs font-bold tracking-widest text-swiss-accent">
+                    {String(i + 1).padStart(2, '0')}.
+                  </span>
+                  <span className="col-span-7 md:col-span-7 font-black uppercase tracking-tight text-4xl md:text-6xl lg:text-7xl leading-none">
+                    {item.label}
+                  </span>
+                  <span className="col-span-3 md:col-span-3 text-xs font-bold tracking-widest uppercase opacity-70 hidden md:block">
+                    {item.meta}
+                  </span>
+                  <span className="col-span-1 text-right font-black text-2xl md:text-3xl transition-transform duration-150 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ───────── Now ───────── */}
+      <section className="bg-swiss-muted swiss-diagonal border-b-4 border-swiss-fg">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div className="md:col-span-4">
+            <SectionLabel number="02" name="Now" />
+          </div>
+          <div className="md:col-span-8 space-y-6">
+            <p className="text-2xl md:text-3xl leading-tight font-medium">
+              Leading NLP work at{' '}
+              <a
+                href="https://www.ravenpack.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-b-2 border-swiss-fg hover:text-swiss-accent hover:border-swiss-accent transition-colors duration-150"
+              >
+                RavenPack
+              </a>{' '}
+              — fine-tuning small language models for query intent, building RAG
+              systems for financial document understanding, and operating models
+              in production.
+            </p>
+            <p className="text-2xl md:text-3xl leading-tight font-medium">
+              Speaking at <span className="font-black">Berlin Buzzwords 2026</span>{' '}
+              and <span className="font-black">AWS Summit Madrid 2026</span>.
+              Organizing{' '}
+              <a
+                href="https://www.meetup.com/es-ES/pydata-malaga/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-b-2 border-swiss-fg hover:text-swiss-accent hover:border-swiss-accent transition-colors duration-150"
+              >
+                PyData Malaga
+              </a>{' '}
+              and{' '}
+              <a
+                href="https://www.meetup.com/aws-user-group-malaga/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-b-2 border-swiss-fg hover:text-swiss-accent hover:border-swiss-accent transition-colors duration-150"
+              >
+                AWS User Group Malaga
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── Footer rule ───────── */}
+      <footer className="border-t-0">
+        <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-8 flex flex-wrap items-center justify-between gap-4 text-xs font-bold tracking-widest uppercase">
+          <span>Hugo Jiménez — 2026</span>
+          <span className="text-swiss-accent">●</span>
+          <span>Marbella · Spain</span>
+        </div>
+      </footer>
+    </main>
   );
 }
