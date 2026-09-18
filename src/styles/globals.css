@@ -1,11 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------------------
+   Tokens. One monospace family, an achromatic ramp, and hairline rules — the
+   whole design system. Dark mode is the same ramp inverted, so every surface
+   is expressed through these variables and never a literal colour.
+   --------------------------------------------------------------------------- */
+
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
+
+  --paper: #ffffff;
+  --ink: #111111;
+  --muted: #6b6b6b;
+  --faint: #9b9b9b;
+  --rule: #e4e4e4;
+  --fill: #f7f7f7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0c0c0c;
+    --ink: #e8e8e8;
+    --muted: #8f8f8f;
+    --faint: #6a6a6a;
+    --rule: #222222;
+    --fill: #141414;
+  }
 }
 
 * {
@@ -15,19 +39,25 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  background: #ffffff;
-  color: #000000;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  font-feature-settings: 'cv11', 'ss01', 'ss03';
-  font-size: 16px;
-  line-height: 1.5;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.7;
+  font-variant-ligatures: none;
+}
+
+@media (max-width: 640px) {
+  html,
+  body {
+    font-size: 14px;
+  }
 }
 
 a {
@@ -36,107 +66,62 @@ a {
 }
 
 ::selection {
-  background: #ff3000;
-  color: #ffffff;
+  background: var(--ink);
+  color: var(--paper);
 }
 
 :focus-visible {
-  outline: 2px solid #ff3000;
-  outline-offset: 2px;
+  outline: 1px solid var(--ink);
+  outline-offset: 3px;
 }
 
 /* ---------------------------------------------------------------------------
-   Swiss texture utilities. Patterns are subtle (1.5%–6% opacity) and never
-   sit on red or pure-black surfaces — they add tactile depth without breaking
-   the flat aesthetic. Use as composable classes alongside Tailwind utilities.
+   The three recurring marks. Everything else is plain Tailwind utilities.
    --------------------------------------------------------------------------- */
 
-@layer utilities {
-  .swiss-grid-pattern {
-    background-image:
-      linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  .swiss-grid-pattern-inv {
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  .swiss-dots {
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
-    background-size: 16px 16px;
-  }
-
-  .swiss-diagonal {
-    background-image: repeating-linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0.025),
-      rgba(0, 0, 0, 0.025) 1px,
-      transparent 1px,
-      transparent 10px
-    );
-  }
-
-  .swiss-noise {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .swiss-noise::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.5;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  }
-}
-
-/* Global paper-grain noise — applied via a fixed pseudo-element so it
-   doesn't interfere with stacking contexts on individual sections. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.02 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-}
-
-/* Repeating components — kept tiny so individual pages stay declarative. */
 @layer components {
-  .swiss-link {
-    @apply relative inline-flex overflow-hidden;
+  /* Muted label that sits above a section or beside a value. */
+  .label {
+    @apply text-[11px] tracking-[0.2em] uppercase text-muted;
   }
 
-  .swiss-link > span:first-child {
-    @apply block transition-transform duration-200 ease-out;
-  }
-  .swiss-link > span:last-child {
-    @apply absolute inset-0 block text-swiss-accent transition-transform duration-200 ease-out;
-    transform: translateY(100%);
+  /* Text link: dotted underline that goes solid on hover. */
+  .link {
+    @apply underline decoration-dotted underline-offset-4 decoration-faint transition-colors duration-150;
   }
 
-  .swiss-link:hover > span:first-child,
-  .swiss-link:focus-visible > span:first-child {
-    transform: translateY(-100%);
+  .link:hover,
+  .link:focus-visible {
+    @apply decoration-solid decoration-ink;
   }
-  .swiss-link:hover > span:last-child,
-  .swiss-link:focus-visible > span:last-child {
-    transform: translateY(0);
+
+  /* Bracketed link, the navigation and call-to-action idiom. The brackets are
+     always in the flow so nothing shifts when they light up on hover. */
+  .bracket::before {
+    content: '[';
+    @apply text-faint transition-colors duration-150;
+  }
+
+  .bracket::after {
+    content: ']';
+    @apply text-faint transition-colors duration-150;
+  }
+
+  .bracket:hover::before,
+  .bracket:hover::after,
+  .bracket:focus-visible::before,
+  .bracket:focus-visible::after,
+  .bracket[data-active='true']::before,
+  .bracket[data-active='true']::after {
+    @apply text-ink;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .swiss-link > span {
-    transition: none !important;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

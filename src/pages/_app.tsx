@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app';
-import Navigation from '@/components/Navigation';
+import { useEffect } from 'react';
 import { DefaultSeo } from 'next-seo';
+import ReactGA from 'react-ga';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 import SEO from '../../next-seo.config';
 import '@/styles/globals.css';
-import ReactGA from 'react-ga';
-import { useEffect } from 'react';
 
 ReactGA.initialize('G-M0Q306LKMJ');
 
@@ -16,8 +17,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <DefaultSeo {...SEO} />
-      <Navigation />
-      <Component {...pageProps} />
+      <div className="flex min-h-screen flex-col">
+        <Navigation />
+        <div className="flex-1">
+          <Component {...pageProps} />
+        </div>
+        <Footer />
+      </div>
     </>
   );
 }

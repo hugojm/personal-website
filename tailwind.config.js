@@ -6,35 +6,36 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // Mirrors the custom properties in globals.css so a single token change
+      // propagates to both light and dark mode.
       colors: {
-        swiss: {
-          bg: '#FFFFFF',
-          fg: '#000000',
-          muted: '#F2F2F2',
-          accent: '#FF3000',
-          border: '#000000',
-        },
+        paper: 'var(--paper)',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        faint: 'var(--faint)',
+        rule: 'var(--rule)',
+        fill: 'var(--fill)',
       },
       fontFamily: {
+        mono: [
+          'JetBrains Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Consolas',
+          'monospace',
+        ],
         sans: [
-          'Inter',
-          'system-ui',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Helvetica Neue',
-          'sans-serif',
+          'JetBrains Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Consolas',
+          'monospace',
         ],
       },
-      fontSize: {
-        '10xl': ['10rem', { lineHeight: '0.85' }],
-        '11xl': ['12rem', { lineHeight: '0.82' }],
-      },
-      letterSpacing: {
-        tightest: '-0.04em',
-        widest: '0.18em',
-      },
-      transitionTimingFunction: {
-        swiss: 'cubic-bezier(0.2, 0, 0, 1)',
+      maxWidth: {
+        measure: '46rem',
       },
     },
   },

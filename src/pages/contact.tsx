@@ -1,91 +1,69 @@
-import SectionLabel from '@/components/swiss/SectionLabel';
+import Section from '@/components/Section';
 
 const links = [
   {
-    label: 'Email',
+    label: 'email',
     value: 'hello@hugo-jimenez.com',
     href: 'mailto:hello@hugo-jimenez.com',
-    note: 'Best for substantive conversations',
+    note: 'best for substantive conversations',
   },
   {
-    label: 'GitHub',
+    label: 'github',
     value: 'github.com/hugojm',
     href: 'https://github.com/hugojm',
-    note: 'Open source & experiments',
+    note: 'open source & experiments',
   },
   {
-    label: 'LinkedIn',
-    value: 'Hugo Jiménez',
+    label: 'linkedin',
+    value: 'in/huugojimenez',
     href: 'https://www.linkedin.com/in/huugojimenez',
-    note: 'Professional network',
+    note: 'professional network',
   },
 ];
 
 const Contact = () => {
   return (
     <main>
-      {/* ───────── 01. Contact ───────── */}
-      <section className="border-b-4 border-swiss-fg">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          <div className="lg:col-span-3">
-            <SectionLabel number="01" name="Contact" />
-          </div>
-          <div className="lg:col-span-9">
-            <h1 className="font-black uppercase tracking-tightest leading-[0.85] text-7xl sm:text-8xl md:text-9xl lg:text-[11rem]">
-              Get in
-              <br />
-              <span className="text-swiss-accent">touch</span>.
-            </h1>
-            <p className="mt-8 md:mt-12 max-w-2xl text-lg md:text-xl leading-snug">
-              Email is the surest channel. I'm always open to conversations about
-              ML engineering, NLP, retrieval systems, and interesting technical
-              problems.
-            </p>
-          </div>
-        </div>
-      </section>
+      <Section rule={false}>
+        <h1 className="text-2xl md:text-3xl">contact</h1>
+        <p className="mt-8 max-w-measure text-muted">
+          Email is the surest channel. I&apos;m always open to conversations
+          about ML engineering, NLP, retrieval systems, and interesting
+          technical problems.
+        </p>
+      </Section>
 
-      {/* ───────── Contact rows ───────── */}
-      <section className="border-b-4 border-swiss-fg">
-        <ul className="mx-auto max-w-[1400px]">
-          {links.map((item, i) => (
-            <li
-              key={item.label}
-              className="border-t-2 border-swiss-fg first:border-t-0"
-            >
-              <a
-                href={item.href}
-                target={item.href.startsWith('http') ? '_blank' : undefined}
-                rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="group block px-6 md:px-12 py-10 md:py-16 transition-colors duration-150 hover:bg-swiss-accent hover:text-swiss-bg"
-              >
-                <div className="grid grid-cols-12 gap-4 items-baseline">
-                  <span className="col-span-2 md:col-span-1 text-xs font-bold tracking-widest text-swiss-accent group-hover:text-swiss-bg">
-                    {String(i + 1).padStart(2, '0')}.
+      <Section label="elsewhere">
+        <ul className="-my-3">
+          {links.map((item) => {
+            const external = item.href.startsWith('http');
+            return (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                  className="group block py-3 sm:flex sm:items-baseline sm:gap-8"
+                >
+                  <span className="label shrink-0 sm:w-28">{item.label}</span>
+                  <span className="mt-1 block min-w-0 flex-1 break-all text-ink sm:mt-0 sm:break-normal">
+                    {item.value}
                   </span>
-                  <div className="col-span-10 md:col-span-7 space-y-2">
-                    <p className="text-xs font-bold tracking-widest uppercase">
-                      {item.label}
-                    </p>
-                    <p className="font-black uppercase tracking-tight text-3xl md:text-5xl lg:text-6xl leading-none break-all md:break-normal">
-                      {item.value}
-                    </p>
-                  </div>
-                  <span className="col-span-8 md:col-span-3 text-xs font-bold tracking-widest uppercase opacity-80">
+                  <span className="hidden text-sm text-faint md:block">
                     {item.note}
                   </span>
                   <span
                     aria-hidden
-                    className="col-span-4 md:col-span-1 text-right text-3xl md:text-5xl font-black transition-transform duration-150 group-hover:translate-x-2"
+                    className="ml-3 hidden text-faint transition-colors duration-150 group-hover:text-ink sm:inline"
                   >
-                    →
+                    {external ? '↗' : '→'}
                   </span>
-                </div>
-              </a>
-            </li>
-          ))}
+                </a>
+              </li>
+            );
+          })}
         </ul>
-      </section>
+      </Section>
     </main>
   );
 };
